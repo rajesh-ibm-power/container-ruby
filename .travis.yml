@@ -6,7 +6,7 @@ services:
 
 script:
   # build the Docker image using the Docker tool, osc cannot be easily used in Travis
-  - cd package
+  #- cd package
   - docker build -t yast-test-image -f Dockerfile .
   # just some smoke tests, make sure rake and YaST work properly,
   # ensure there is no leftover in the working directory
