@@ -2,18 +2,14 @@ sudo: required
 arch:
   - amd64
   - ppc64le
-language: bash
+language: ruby
 dist: xenial
 services:
   - docker
 
+before_install:
+  - docker build -t container-ruby .
+  - docker ps -a
+
 script:
-  # build the Docker image using the Docker tool, osc cannot be easily used in Travis
-  #- cd package
-  - docker build -t container-ruby -f Dockerfile .
-  - install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \
-    curl -sL https://copr.fedorainfracloud.org/coprs/manageiq/ManageIQ-Master/repo/epel-7/manageiq-ManageIQ-Master-epel-7.repo -o /etc/yum.ruby.d/manageiq.repo
-
-
-  - install --setopt=tsflags=nodocs ruby-install make
-  - ruby-install --system ruby 2.5.7 -- --disable-install-doc --enable-shared && rm -rf /usr/local/src/* && yum clean all
+  - bundle exec rake test
